@@ -1,4 +1,4 @@
-// SalomeGeomFilterGroup
+## SalomeGeomFilterGroup
 
 A python script for creating Geometry groups in the GEOM module using features and properties of another group.
 
