@@ -1,8 +1,8 @@
-## SalomeGeomFilterGroup
+# SalomeGeomFilterGroup
 
 A python script for creating Geometry groups in the GEOM module using features and properties of another group.
 
-# Previews
+## Previews
 
 Faces + Size options:
 
@@ -14,15 +14,15 @@ Solid + Size + location option:
 ![ScreenShot](SalomeGeomFilterGroup2.png)
 
 
-# Videos
+## Video demostration
 Youtube Video: https://www.youtube.com/watch?v=Nil1zQtyf_8
 
 
-# News
+## News
 25/10/16 - Upload first version
 
 
-# Know Problems
+## Know Problems
 
 
-# To Do
+## To Do
