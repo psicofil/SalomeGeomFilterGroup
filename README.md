@@ -1,6 +1,7 @@
 # SalomeGeomFilterGroup
 
 A python script for creating Geometry groups in the GEOM module using features and properties of another group.
+Add the directory of the script to add an entry into the plugin menu for GEOM (New Entity / Python Plugins).
 
 ## Previews
 
