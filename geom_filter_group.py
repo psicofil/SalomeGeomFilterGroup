@@ -1,6 +1,10 @@
 # Create groups from filters
 
-from PyQt5 import uic
+try:
+    from PyQt4 import uic
+except ImportError:
+    from PyQt5 import uic
+
 from qtsalome import Qt, QDialog, QMessageBox
 from salome.geom.geomtools import getGeompy, GeomStudyTools
 import math
