@@ -5,11 +5,21 @@ try:
 except ImportError:
     from PyQt5 import uic
 
-from qtsalome import Qt, QDialog, QMessageBox
+try:
+    from qtsalome import Qt, QDialog, QMessageBox
+except ImportError:
+    from PyQt4.QtGui import QDialog, QMessageBox
+    from PyQt4.QtCore import Qt
+
+import GEOM
 from salome.geom.geomtools import getGeompy, GeomStudyTools
 import math
 import os
 import salome_pluginsmanager
+
+
+geompy = getGeompy()
+geomTool = GeomStudyTools()
 
 
 class GeomFilterGroupDialog(QDialog):
@@ -21,8 +31,6 @@ class GeomFilterGroupDialog(QDialog):
         self.directory = os.path.dirname(os.path.abspath(__file__))
         uic.loadUi(os.path.join(self.directory, "geom_filter_group_dialog.ui"),
                    self)
-        self.geomTool = GeomStudyTools()
-        self.geompy = getGeompy()
         
         self.selobj = None
         self.type_o = ''
@@ -39,16 +47,16 @@ class GeomFilterGroupDialog(QDialog):
         self.shapetype = -1
         self.cb_norm.setEnabled(False)
         try:
-            self.selobj = self.geomTool.getGeomObjectSelected()
+            self.selobj = geomTool.getGeomObjectSelected()
             # Is a group?
-            isgroup = self.geompy.ShapeIdToType(self.selobj.GetType()) == 'GROUP'
+            isgroup = geompy.ShapeIdToType(self.selobj.GetType()) == 'GROUP'
             if not isgroup:
                 return
             # Type of element
             self.type_o = str(self.selobj.GetTopologyType())
             if self.type_o == 'COMPOUND':
                 return
-            self.shapetype = self.geompy.ShapeType[self.type_o]
+            self.shapetype = geompy.ShapeType[self.type_o]
             # Set object Name
             self.le_ref_g.setText(self.selobj.GetName())
             # Set normal availble
@@ -62,9 +70,9 @@ class GeomFilterGroupDialog(QDialog):
             if self.selobj is None:
                 return
             # The father of group
-            father = self.geompy.GetMainShape(self.selobj)
+            father = geompy.GetMainShape(self.selobj)
             # Size
-            props = self.geompy.BasicProperties(self.selobj)
+            props = geompy.BasicProperties(self.selobj)
             if self.type_o=="EDGE":
                 Sref = props[0]
             if self.type_o=="FACE":
@@ -72,19 +80,19 @@ class GeomFilterGroupDialog(QDialog):
             if self.type_o=="SOLID":
                 Sref = props[2]
             # Location
-            cm_ref = self.geompy.MakeCDG(self.selobj)
-            x_ref, y_ref, z_ref = self.geompy.PointCoordinates(cm_ref)
+            cm_ref = geompy.MakeCDG(self.selobj)
+            x_ref, y_ref, z_ref = geompy.PointCoordinates(cm_ref)
             # Normal (Element==Face)
             if self.type_o=="FACE":
-                vnorm_ref = self.geompy.GetNormal(self.selobj)
+                vnorm_ref = geompy.GetNormal(self.selobj)
             else:
                 vnorm_ref = None
             # Create container group
             group = []
             # All Object elements of type self.type_o
-            elements = self.geompy.ExtractShapes(father, self.shapetype, True)
+            elements = geompy.ExtractShapes(father, self.shapetype, True)
             # Create group
-            Group_f = self.geompy.CreateGroup(father, self.shapetype)
+            Group_f = geompy.CreateGroup(father, self.shapetype)
             # Set color of the group
             from salome import SALOMEDS
             Group_f.SetColor(SALOMEDS.Color(1,0,0))
@@ -97,10 +105,10 @@ class GeomFilterGroupDialog(QDialog):
         try:
             # Selected elements for the group whit the desired conditios
             for i in elements:
-                props = self.geompy.BasicProperties(i)
-                cm = self.geompy.MakeCDG(i)
+                props = geompy.BasicProperties(i)
+                cm = geompy.MakeCDG(i)
                 # Element i coordinates
-                x, y, z = self.geompy.PointCoordinates(cm)
+                x, y, z = geompy.PointCoordinates(cm)
                 # Element i size
                 if self.type_o=="EDGE":
                     S = props[0]
@@ -112,8 +120,8 @@ class GeomFilterGroupDialog(QDialog):
                 if vnorm_ref is None:
                     vnorm = None
                 else:
-                    vnorm = self.geompy.GetNormal(i)
-                    angle = self.geompy.GetAngle(vnorm_ref, vnorm)
+                    vnorm = geompy.GetNormal(i)
+                    angle = geompy.GetAngle(vnorm_ref, vnorm)
                 # Comparations
                 cond = []
                 if self.cb_size.isChecked():
@@ -146,7 +154,7 @@ class GeomFilterGroupDialog(QDialog):
                 else:
                     cond.append(True)
                 if all(cond):
-                    ID = self.geompy.GetSubShapeID(father,i)
+                    ID = geompy.GetSubShapeID(father,i)
                     group.append(ID)
 #                     cond.append(cond)
         except Exception as e:
@@ -154,11 +162,11 @@ class GeomFilterGroupDialog(QDialog):
             return
         # Add elements desired to Group
         try:
-            self.geompy.UnionIDs(Group_f, group)
+            geompy.UnionIDs(Group_f, group)
             # Add group in the gui
-            resGroup = self.geompy.addToStudyInFather(father, Group_f, name_g)
+            resGroup = geompy.addToStudyInFather(father, Group_f, name_g)
             # View group
-            self.geomTool.displayShapeByEntry(resGroup)
+            geomTool.displayShapeByEntry(resGroup)
         except Exception as e:
             QMessageBox.critical(None,'Error',str(e),QMessageBox.Abort)
             return
