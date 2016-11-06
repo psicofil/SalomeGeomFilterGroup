@@ -21,6 +21,7 @@ Youtube Video: https://www.youtube.com/watch?v=Nil1zQtyf_8
 
 ## News
 25/10/16 - Upload first version
+
 27/10/16 - The user frodon1 upload new version, with the possibility of using the Salome plugin manager
 
 # Instrucions of use
