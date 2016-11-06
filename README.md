@@ -7,12 +7,12 @@ Add the directory of the script to add an entry into the plugin menu for GEOM (N
 
 Faces + Size options:
 
-![ScreenShot](SalomeGeomFilterGroup1.png)
+![ScreenShot](Previews/SalomeGeomFilterGroup1.png)
 
 
 Solid + Size + location option:
 
-![ScreenShot](SalomeGeomFilterGroup2.png)
+![ScreenShot](Previews/SalomeGeomFilterGroup2.png)
 
 
 ## Video demostration
@@ -21,9 +21,14 @@ Youtube Video: https://www.youtube.com/watch?v=Nil1zQtyf_8
 
 ## News
 25/10/16 - Upload first version
+27/10/16 - The user frodon1 upload new version, with the possibility of using the Salome plugin manager
 
+# Instrucions of use
 
-## Know Problems
+From python script GeomFilterGroup.py:
 
+In Salome - File - Load Script... - select GeomFilterGroup.py
 
-## To Do
+## Instalation and use in Salome plugin manager
+
+In construction.
