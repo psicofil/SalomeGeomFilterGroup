@@ -29,15 +29,13 @@ class GeomFilterGroupDialog(QDialog):
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.context = context
         self.directory = os.path.dirname(os.path.abspath(__file__))
-        uic.loadUi(os.path.join(self.directory, "geom_filter_group_dialog.ui"),
-                   self)
-        
+        uic.loadUi(os.path.join(self.directory, "geom_filter_group_dialog.ui"),self)     
         self.selobj = None
         self.type_o = ''
         self.shapetype = -1
-
         # Call selectGroupRef function
         self.selectGroupRef()
+        
 
     # Selected Object
     def selectGroupRef(self):
