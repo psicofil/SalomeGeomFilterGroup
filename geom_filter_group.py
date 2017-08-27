@@ -180,3 +180,7 @@ def getDialog(context):
     if __dialog is None:
       __dialog = GeomFilterGroupDialog(context)
     return __dialog
+
+import geom_filter_group
+dialog = geom_filter_group.getDialog(context)
+dialog.show()
